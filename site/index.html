@@ -156,7 +156,6 @@ input[type="range"]:focus-visible{outline:3px solid #a4b85d;outline-offset:3px}
     <a href="#csv-roc">ROC / AUC</a>
     <a href="#csv-tsne">t-SNE</a>
     <a href="#csv-clusters">Кластеризация</a>
-    <a href="#holdout-examples">Примеры прогнозов</a>
   </nav>
 
   <section id="patient-calculator" class="section"><div class="section-heading"><h2>Калькулятор прогноза для нового пациента</h2></div><p class="notice">Исследовательская модель. Не использовать для диагностики, назначения или изменения лечения.</p><p class="section-intro">Прогноз рассчитывается в браузере. Введённые значения остаются на устройстве.</p><div class="panel"><div class="calculator-treatment-grid">
@@ -293,20 +292,6 @@ input[type="range"]:focus-visible{outline:3px solid #a4b85d;outline-offset:3px}
       </div>
       <p class="hint">Кольцо отмечает представителя группы, ближайшего к центроиду в пространстве исходных признаков. Ромб показывает среднее положение точек группы на карте.</p>
       <div class="cohort-groups" id="public-cluster-groups" aria-label="Выделить группу"></div>
-    </div>
-  </section>
-
-  <section id="holdout-examples" class="section">
-    <div class="section-heading"><h2>Примеры прогнозов на проверочной части</h2></div>
-    <p class="section-intro">По одному примеру из каждой непустой ячейки матрицы ошибок модели <strong>CatBoost</strong>. Вероятности округлены до десятков процентов.</p>
-    <div class="table-wrap panel">
-      <table>
-        <thead><tr><th>Фактический исход</th><th>Прогноз</th><th>Вероятность выраженного ответа</th></tr></thead>
-        <tbody><tr><td>Нет ответа</td><td>Нет ответа</td><td>≈ 40%</td></tr>
-<tr><td>Нет ответа</td><td>Выраженный ответ</td><td>≈ 60%</td></tr>
-<tr><td>Выраженный ответ</td><td>Нет ответа</td><td>≈ 30%</td></tr>
-<tr><td>Выраженный ответ</td><td>Выраженный ответ</td><td>≈ 50%</td></tr></tbody>
-      </table>
     </div>
   </section>
 </main>
@@ -652,8 +637,6 @@ window.setupCsvComparison = function (modelComparison) {
   const data = JSON.parse($("page-data").textContent);
   const {renderComparison} = window.setupCsvComparison(data.model_comparison);
   renderComparison();
-  $("csv-model-caveat").textContent =
-    "Модель для примеров выбрана по результатам на той же проверочной части. Это внутренняя исследовательская оценка.";
   const {explanationBars, format} = window.PatientCalculatorUI;
   const {features, labels, holdout_count: count, repeats} = data.importance;
   const max = Math.max(1e-12, ...features.map(row => Math.abs(row.value)));
